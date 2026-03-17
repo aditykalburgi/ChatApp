@@ -2,9 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title> ChatApp</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+
 </head>
 <body>
 
+<input id = "name" placeholder="name">
+<input id = "message" placeholder = "message">
+<button onlick = "send()">send</button>
+
+<ul id="chat"></ul>
+
+<script>
+    let stompClient = null;
+
+    function connect(){
+    let socket = new sockJS('/chat');
+    stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, function(msg){
+
+    stompClient.subscribe('/topic/messages', function(msg){
+
+    let messages = JSON.parse(msg.body);
+
+    let li = document.createElement("li");
+    li.innerHTML = message.sender + ":" message.content;
+
+    document.getElmentById("chat").appendChild(li);
+    });
+    });
+    }
+
+
+
+</script>
 </body>
 </html>
