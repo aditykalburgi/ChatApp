@@ -18,7 +18,7 @@ public class ChatMessage {
         return content;
     }
 
-    public void setConent(String content ){
+    public void setContent(String content ){
         this.content = content;
     }
 }

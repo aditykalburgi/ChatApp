@@ -2,54 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title> ChatApp</title>
+    <title>ChatApp</title>
 
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
-
 </head>
+
 <body>
 
-<input id = "name" placeholder="name">
-<input id = "message" placeholder = "message">
-<button onlick = "send()">send</button>
+<input id="name" placeholder="name">
+<input id="message" placeholder="message">
+<button onclick="send()">Send</button>
 
 <ul id="chat"></ul>
 
 <script>
+
     let stompClient = null;
 
     function connect(){
-    let socket = new sockJS('/chat');
-    stompClient = Stomp.over(socket);
 
-    stompClient.connect({}, function(msg){
+        let socket = new SockJS('/chat');   // ✅ Correct
+        stompClient = Stomp.over(socket);
 
-    stompClient.subscribe('/topic/messages', function(msg){
+        stompClient.connect({}, function () {
 
-    let messages = JSON.parse(msg.body);
+            stompClient.subscribe('/topic/messages', function (msg) {
 
-    let li = document.createElement("li");
-    li.innerHTML = message.sender + ":" message.content;
+                let message = JSON.parse(msg.body);  // ✅ correct variable
 
-    document.getElmentById("chat").appendChild(li);
-    });
-    });
+                let li = document.createElement("li");
+                li.innerText = message.sender + ": " + message.content;  // ✅ fixed
+
+                document.getElementById("chat").appendChild(li);  // ✅ fixed
+            });
+
+        });
     }
 
-function send(){
+    function send(){
 
-    let name = document.getElementById("name").value;
-    let message = documnet.getElmentbyId("message").value;
+        let name = document.getElementById("name").value;
+        let message = document.getElementById("message").value;
 
-    stompClient.send("/app/send", {}, JSON.stringify({
-    sender:name,
-    content:message,
-    }));
+        stompClient.send("/app/send", {}, JSON.stringify({
+            sender: name,
+            content: message
+        }));
     }
 
     connect();
 
 </script>
+
 </body>
 </html>
