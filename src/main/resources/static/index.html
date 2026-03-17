@@ -37,7 +37,18 @@
     });
     }
 
+function send(){
 
+    let name = document.getElementById("name").value;
+    let message = documnet.getElmentbyId("message").value;
+
+    stompClient.send("/app/send", {}, JSON.stringify({
+    sender:name,
+    content:message,
+    }));
+    }
+
+    connect();
 
 </script>
 </body>
